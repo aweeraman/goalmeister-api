@@ -31,7 +31,7 @@ public class PingResourceTest {
         // --
         // c.configuration().enable(new org.glassfish.jersey.media.json.JsonJaxbFeature());
 
-        target = c.target(Start.BASE_URI);
+        target = c.target(Start.BASE_API_URI);
     }
 
     @After

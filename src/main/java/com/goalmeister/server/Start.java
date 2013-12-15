@@ -15,8 +15,9 @@ import com.goalmeister.services.PingResource;
  * 
  */
 public class Start {
-	// Base URI the Grizzly HTTP server will listen on
-	public static final String BASE_URI = "http://localhost:8080/api";
+	// TODO Base API URI the Grizzly HTTP server will listen on. This can be
+	// overriden from the configuration file
+	public static final String BASE_API_URI = "http://localhost:8080/api";
 
 	/**
 	 * Starts Grizzly HTTP server exposing JAX-RS resources defined in this
@@ -26,8 +27,7 @@ public class Start {
 	 */
 	public static HttpServer startServer() {
 		// create a resource config that scans for JAX-RS resources and
-		// providers
-		// in com.goalmeister package
+		// providers in com.goalmeister package
 		final ResourceConfig rc = new ResourceConfig()
 				.packages("com.goalmeister");
 
@@ -37,7 +37,7 @@ public class Start {
 		// create and start a new instance of grizzly http server
 		// exposing the Jersey application at BASE_URI
 		HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(
-				URI.create(BASE_URI), rc);
+				URI.create(BASE_API_URI), rc);
 
 		// TODO: These two attributes should be configurable through the YAML file
 		StaticHttpHandler httpHandler = new StaticHttpHandler("src/main/html");
@@ -59,7 +59,7 @@ public class Start {
 		System.out.println(String.format(
 				"Jersey app started with WADL available at "
 						+ "%sapplication.wadl\nHit enter to stop it...",
-				BASE_URI));
+				BASE_API_URI));
 		System.in.read();
 		server.stop();
 	}
