@@ -39,8 +39,11 @@ public class Start {
 		HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(
 				URI.create(BASE_URI), rc);
 
-		httpServer.getServerConfiguration().addHttpHandler(
-				new StaticHttpHandler("/tmp/"), "/");
+		// TODO: These two attributes should be configurable through the YAML file
+		StaticHttpHandler httpHandler = new StaticHttpHandler("src/main/html");
+		httpHandler.setFileCacheEnabled(false);
+
+		httpServer.getServerConfiguration().addHttpHandler(httpHandler, "/");
 
 		return httpServer;
 	}
