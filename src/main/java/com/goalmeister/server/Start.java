@@ -16,7 +16,7 @@ import com.goalmeister.services.PingResource;
  */
 public class Start {
 	// TODO Base API URI the Grizzly HTTP server will listen on. This can be
-	// overriden from the configuration file
+	// overriden from the configuration filea
 	public static final String BASE_API_URI = "http://localhost:8080/api";
 
 	/**
@@ -40,7 +40,7 @@ public class Start {
 				URI.create(BASE_API_URI), rc);
 
 		// TODO: These two attributes should be configurable through the YAML file
-		StaticHttpHandler httpHandler = new StaticHttpHandler("src/main/html");
+		StaticHttpHandler httpHandler = new StaticHttpHandler("src/main/html/app");
 		httpHandler.setFileCacheEnabled(false);
 
 		httpServer.getServerConfiguration().addHttpHandler(httpHandler, "/");
