@@ -8,6 +8,7 @@ Benchmarks
 
 Baseline benchmark taken on the Ping service on Dec 15:
 
+```
 apib -w 5 -c 250 -d 20 http://localhost:8080/goalmeister/ping
 
 Warming up: (5 / 5) 2133.699 0% cpu
@@ -40,3 +41,4 @@ Total bytes sent:      3.98 megabytes
 Total bytes received:  5.38 megabytes
 Send bandwidth:        1.59 megabits / second
 Receive bandwidth:     2.15 megabits / second
+```
