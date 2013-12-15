@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -15,7 +16,7 @@ import com.goalmeister.services.PingResource;
  */
 public class Start {
 	// Base URI the Grizzly HTTP server will listen on
-	public static final String BASE_URI = "http://localhost:8080/goalmeister/";
+	public static final String BASE_URI = "http://localhost:8080/api";
 
 	/**
 	 * Starts Grizzly HTTP server exposing JAX-RS resources defined in this
@@ -32,11 +33,14 @@ public class Start {
 
 		// Register resources
 		rc.register(PingResource.class);
-		
+
 		// create and start a new instance of grizzly http server
 		// exposing the Jersey application at BASE_URI
 		HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(
 				URI.create(BASE_URI), rc);
+
+		httpServer.getServerConfiguration().addHttpHandler(
+				new StaticHttpHandler("/tmp/"), "/");
 
 		return httpServer;
 	}
