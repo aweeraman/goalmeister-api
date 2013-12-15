@@ -1,6 +1,18 @@
 NOTES
 =====
 
+# Feature backlog
+* Externalize configuration (port, location of HTML) in YAML file
+* OAuth2 / security
+* MongoDB integration
+* Services
+..* Goals
+..* Actions
+..* User management
+..* Data sync
+
+---
+
 # Quick commands
 
 ```
