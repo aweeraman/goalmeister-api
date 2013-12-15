@@ -6,10 +6,10 @@ NOTES
 * OAuth2 / security
 * MongoDB integration
 * Services
-..* Goals
-..* Actions
-..* User management
-..* Data sync
+  * Goals
+  * Actions
+  * User management
+  * Data sync
 
 ---
 
