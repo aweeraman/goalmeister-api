@@ -1,3 +1,8 @@
 base_uri: http://localhost:8080/api
 html_dir: src/main/html/app
 file_cache_enabled: no
+mongo_hostname: localhost
+mongo_port: 27017
+mongo_db: goalmeister
+mongo_username:
+mongo_password:
