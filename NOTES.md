@@ -34,7 +34,7 @@ mvn exec:java
 
 java -jar target/goalmeister-webapp-1.0-SNAPSHOT.jar
 
-apib -w 5 -c 250 -d 20 http://localhost:8080/goalmeister/ping
+apib -w 5 -c 250 -d 20 http://localhost:8080/api/ping
 ```
 
 ---

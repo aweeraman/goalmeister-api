@@ -8,6 +8,7 @@ import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import com.goalmeister.services.GoalsResource;
 import com.goalmeister.services.PingResource;
 
 /**
@@ -36,6 +37,7 @@ public class Start {
 
 		// Register resources
 		rc.register(PingResource.class);
+		rc.register(GoalsResource.class);
 
 		// create and start a new instance of grizzly http server
 		// exposing the Jersey application at BASE_URI
