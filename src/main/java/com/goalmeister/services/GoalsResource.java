@@ -1,9 +1,12 @@
 package com.goalmeister.services;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+
+import com.goalmeister.model.Goal;
 
 /**
  * Goals service
@@ -12,8 +15,8 @@ import javax.ws.rs.core.MediaType;
 public class GoalsResource extends AbstractResource {
 
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public String listAll() {
+	@Produces("application/json")
+	public List<Goal> listAll() {
 		return goalDao.listAll();
 	}
 }
