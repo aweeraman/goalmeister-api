@@ -2,7 +2,7 @@ NOTES
 =====
 
 # Feature backlog
-* Externalize configuration (port, location of HTML) in YAML file
+* Externalize configuration (port, location of HTML) in YAML file - done 12/16
 * OAuth2 / security
 * MongoDB integration
 * Services
