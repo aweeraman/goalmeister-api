@@ -10,10 +10,15 @@ public abstract class AbstractDao {
 	private static Configuration config = Configuration.getInstance();
 
 	protected static MongoClient client;
+	protected static DB db;
 
 	public AbstractDao() {
 		if (client == null) {
 			client = getClient();
+		}
+		
+		if (db == null) {
+			db = getDb();
 		}
 	}
 
@@ -29,7 +34,7 @@ public abstract class AbstractDao {
 	}
 
 	public static DB getDb() {
-		DB db = getClient().getDB(config.getMongoDb());
+		db = getClient().getDB(config.getMongoDb());
 		db.authenticate(config.getMongoUsername(), config.getMongoPassword()
 				.toCharArray());
 		return db;

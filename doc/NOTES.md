@@ -4,7 +4,8 @@ NOTES
 # Feature backlog
 * Externalize configuration (port, location of HTML) in YAML file - done 12/16
 * OAuth2 / security
-* MongoDB integration
+* MongoDB integration - done 12/16
+* Serialization and object binding
 * Services
   * Goals
   * Actions

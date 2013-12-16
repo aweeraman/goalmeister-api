@@ -8,7 +8,7 @@ public class GoalDaoImpl extends AbstractDao implements GoalDao {
 	@Override
 	public String listAll() {
 		StringBuffer buf = new StringBuffer();
-		DBCursor cursor = getDb().getCollection("goals").find();
+		DBCursor cursor = db.getCollection("goals").find();
 		try {
 			while (cursor.hasNext()) {
 				buf.append(cursor.next());
