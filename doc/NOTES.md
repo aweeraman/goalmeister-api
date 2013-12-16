@@ -60,7 +60,6 @@ The resource classes had to be manually registered in Start.java
 rc.register(PingResource.class);
 ```
 
-
 ### Exception in thread "main" java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
 This was due to the shade plugin rebundling the jars. The solution was to setup a few excludes in the plugin.
 ```
@@ -74,3 +73,6 @@ This was due to the shade plugin rebundling the jars. The solution was to setup 
 	</filter>
 </filters>
 ```
+
+### ObjectId serialization issue
+Mongo was internally using ObjectIds for the keys and it was causing an issue where during an update it was creating a new String key instead of using the ObjectId. This was resolved by adding the @ObjectId annotation in the model so that mongojack take care of serializing to the correct ObjectId under the hood.
