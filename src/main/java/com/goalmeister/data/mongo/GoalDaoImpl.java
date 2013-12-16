@@ -34,4 +34,9 @@ public class GoalDaoImpl extends AbstractDao implements GoalDao {
 	public void delete(String id) {
 		coll.removeById(id);
 	}
+
+	@Override
+	public Goal findById(String id) {
+		return coll.findOneById(id);
+	}
 }

@@ -12,4 +12,6 @@ public interface GoalDao {
 		
 	public void delete(String id);
 	
+	public Goal findById(String id);
+	
 }

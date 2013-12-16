@@ -25,6 +25,13 @@ public class GoalsResource extends AbstractResource {
 		return goalDao.list();
 	}
 	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{id}")
+	public Goal findById(@PathParam("id") String id) {
+		return goalDao.findById(id);
+	}
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
