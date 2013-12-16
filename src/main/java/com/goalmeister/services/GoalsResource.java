@@ -5,20 +5,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.goalmeister.data.DaoFactory;
-import com.goalmeister.data.GoalDao;
-
 /**
- * Ping service
+ * Goals service
  */
 @Path("goals")
-public class GoalsResource {
-
-	GoalDao goalDao = DaoFactory.getGoalDao();
+public class GoalsResource extends AbstractResource {
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getIt() {
-		return goalDao.getData();
+	public String listAll() {
+		return goalDao.listAll();
 	}
 }
