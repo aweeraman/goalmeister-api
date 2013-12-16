@@ -15,9 +15,6 @@ import com.goalmeister.services.PingResource;
  * 
  */
 public class Start {
-	// TODO Base API URI the Grizzly HTTP server will listen on. This can be
-	// overriden from the configuration filea
-	public static final String BASE_API_URI = "http://localhost:8080/api";
 
 	/**
 	 * Starts Grizzly HTTP server exposing JAX-RS resources defined in this
@@ -25,7 +22,13 @@ public class Start {
 	 * 
 	 * @return Grizzly HTTP server.
 	 */
-	public static HttpServer startServer() {
+	public static HttpServer startServer(Configuration config) {
+
+		// Load default values
+		if (config == null) {
+			config = Configuration.getInstance();
+		}
+
 		// create a resource config that scans for JAX-RS resources and
 		// providers in com.goalmeister package
 		final ResourceConfig rc = new ResourceConfig()
@@ -37,11 +40,12 @@ public class Start {
 		// create and start a new instance of grizzly http server
 		// exposing the Jersey application at BASE_URI
 		HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(
-				URI.create(BASE_API_URI), rc);
+				URI.create(config.getBaseUri()), rc);
 
-		// TODO: These two attributes should be configurable through the YAML file
-		StaticHttpHandler httpHandler = new StaticHttpHandler("src/main/html/app");
-		httpHandler.setFileCacheEnabled(false);
+		// These two attributes should be configurable through the YAML file
+		StaticHttpHandler httpHandler = new StaticHttpHandler(
+				config.getHtmlDirectory());
+		httpHandler.setFileCacheEnabled(config.isFileCacheEnabled());
 
 		httpServer.getServerConfiguration().addHttpHandler(httpHandler, "/");
 
@@ -55,11 +59,18 @@ public class Start {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		final HttpServer server = startServer();
-		System.out.println(String.format(
-				"Jersey app started with WADL available at "
-						+ "%sapplication.wadl\nHit enter to stop it...",
-				BASE_API_URI));
+		
+		Configuration config = Configuration.getInstance();
+		if (args.length > 0) {
+			config = Configuration.loadConfiguration(args[0]);
+		}
+		
+		final HttpServer server = startServer(config);
+		
+		System.out
+				.println(String
+						.format("Goalmeister API server started (%s/application.wadl)\nHit enter to stop it...",
+								config.getBaseUri()));
 		System.in.read();
 		server.stop();
 	}

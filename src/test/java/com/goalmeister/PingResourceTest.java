@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.goalmeister.server.Configuration;
 import com.goalmeister.server.Start;
 
 import static org.junit.Assert.assertEquals;
@@ -21,7 +22,7 @@ public class PingResourceTest {
     @Before
     public void setUp() throws Exception {
         // start the server
-        server = Start.startServer();
+        server = Start.startServer(null);
         // create the client
         Client c = ClientBuilder.newClient();
 
@@ -31,7 +32,7 @@ public class PingResourceTest {
         // --
         // c.configuration().enable(new org.glassfish.jersey.media.json.JsonJaxbFeature());
 
-        target = c.target(Start.BASE_API_URI);
+        target = c.target(Configuration.getInstance().getBaseUri());
     }
 
     @After
@@ -40,7 +41,7 @@ public class PingResourceTest {
     }
 
     /**
-     * Test to see that the message "Got it!" is sent in the response.
+     * Test to see that the message "Ping!" is sent in the response.
      */
     @Test
     public void testGetIt() {
