@@ -10,6 +10,6 @@ public interface GoalDao {
 	
 	public Goal save(Goal goal);
 		
-	public Goal delete(String id);
+	public void delete(String id);
 	
 }

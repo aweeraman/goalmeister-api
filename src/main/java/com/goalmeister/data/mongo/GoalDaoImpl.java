@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.mongojack.DBCursor;
 import org.mongojack.JacksonDBCollection;
-import org.mongojack.WriteResult;
 
 import com.goalmeister.data.GoalDao;
 import com.goalmeister.model.Goal;
@@ -32,9 +31,7 @@ public class GoalDaoImpl extends AbstractDao implements GoalDao {
 	}
 
 	@Override
-	public Goal delete(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public void delete(String id) {
+		coll.removeById(id);
 	}
-
 }
