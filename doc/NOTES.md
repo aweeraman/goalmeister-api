@@ -5,9 +5,9 @@ NOTES
 * Externalize configuration (port, location of HTML) in YAML file - done 12/16
 * OAuth2 / security
 * MongoDB integration - done 12/16
-* Serialization and object binding
+* Serialization and object binding - done 12/16
 * Services
-  * Goals
+  * Goals - crud operations done 12/16
   * Actions
   * User management
   * Data sync
