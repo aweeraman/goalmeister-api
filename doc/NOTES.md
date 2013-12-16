@@ -36,12 +36,16 @@ mvn exec:java
 java -jar target/goalmeister-webapp-1.0-SNAPSHOT.jar
 
 apib -w 5 -c 250 -d 20 http://localhost:8080/api/ping
+
+Username: aweeraman@gmail.com, Password: weeraman
+curl -v -H "Authorization: Basic aHR0cHdhdGNoOmY=" http://localhost:8080/api/oauth2/token
 ```
 
 ---
 
 # Links
 [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+[Base64 decoder](http://www.base64encode.org/)
 
 
 ---

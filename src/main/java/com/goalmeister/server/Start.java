@@ -9,6 +9,7 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import com.goalmeister.management.filters.OAuth2Filter;
+import com.goalmeister.management.services.OAuth2Resource;
 import com.goalmeister.services.GoalsResource;
 import com.goalmeister.services.PingResource;
 
@@ -40,7 +41,8 @@ public class Start {
 		rc.register(PingResource.class);
 		rc.register(GoalsResource.class);
 
-		// Register filters
+		// Register authorization services filters
+		rc.register(OAuth2Resource.class);
 		rc.register(OAuth2Filter.class);
 
 		// create and start a new instance of grizzly http server
