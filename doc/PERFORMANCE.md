@@ -78,3 +78,45 @@ Total bytes received:  10.87 megabytes
 Send bandwidth:        1.02 megabits / second
 Receive bandwidth:     4.35 megabits / second
 ```
+
+
+---
+
+
+
+Performance after integrating Mongojack and Moxy for JSON serialization.
+
+```
+apib -w 5 -c 250 -d 20 http://localhost:8080/api/goals
+
+Warming up: (5 / 5) 1294.407 0% cpu
+(4 / 20) 1332.278 0% cpu
+(10 / 20) 1311.440 0% cpu
+(15 / 20) 1338.834 0% cpu
+(20 / 20) 1118.881 0% cpu
+Duration:             20.001 seconds
+Attempted requests:   25509
+Successful requests:  25509
+Non-200 results:      0
+Connections opened:   0
+Socket errors:        0
+
+Throughput:           1275.388 requests/second
+Average latency:      196.011 milliseconds
+Minimum latency:      102.669 milliseconds
+Maximum latency:      491.088 milliseconds
+Latency std. dev:     68.970 milliseconds
+50% latency:          147.433 milliseconds
+90% latency:          277.276 milliseconds
+98% latency:          342.512 milliseconds
+99% latency:          359.871 milliseconds
+
+Client CPU average:    0%
+Client CPU max:        0%
+Client memory usage:    0%
+
+Total bytes sent:      2.18 megabytes
+Total bytes received:  9.73 megabytes
+Send bandwidth:        0.87 megabits / second
+Receive bandwidth:     3.89 megabits / second
+```
