@@ -59,3 +59,18 @@ The resource classes had to be manually registered in Start.java
 ```
 rc.register(PingResource.class);
 ```
+
+
+### Exception in thread "main" java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
+This was due to the shade plugin rebundling the jars. The solution was to setup a few excludes in the plugin.
+```
+<filter>
+	<artifact>*:*</artifact>
+		<excludes>
+			<exclude>META-INF/*.SF</exclude>
+			<exclude>META-INF/*.DSA</exclude>
+			<exclude>META-INF/*.RSA</exclude>
+		</excludes>
+	</filter>
+</filters>
+```
