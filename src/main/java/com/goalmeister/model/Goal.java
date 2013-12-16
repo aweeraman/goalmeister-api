@@ -1,11 +1,11 @@
 package com.goalmeister.model;
 
-import org.mongojack.Id;
+import org.mongojack.ObjectId;
 
 public class Goal {
 	
-	@Id
-	public String id;
+	@ObjectId
+	public String _id;
 	public String title;
 	public String description;
 	
