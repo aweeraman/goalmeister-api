@@ -11,6 +11,9 @@ NOTES
   * Actions
   * User management
   * Data sync
+* Metrics
+* Reverse Proxy (use two Grizzly instances)
+* Logger integration
 
 
 ---
@@ -45,7 +48,10 @@ curl -v -H "Authorization: Basic aHR0cHdhdGNoOmY=" http://localhost:8080/api/oau
 
 # Links
 [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+
 [Base64 decoder](http://www.base64encode.org/)
+
+[Building a Web API Platform] (http://www.slideshare.net/rfeng/con6946-feng)
 
 
 ---
