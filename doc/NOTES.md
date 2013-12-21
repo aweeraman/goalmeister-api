@@ -4,6 +4,9 @@ NOTES
 # Feature backlog
 * Externalize configuration (port, location of HTML) in YAML file - done 12/16
 * OAuth2 / security - done 12/21
+  * Basic auth using client credentials for token endpoint
+  * Role based authorization - done 12/21
+  * Multi-tenancy for the users
 * MongoDB integration - done 12/16
 * Serialization and object binding - done 12/16
 * Services

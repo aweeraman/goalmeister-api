@@ -32,7 +32,6 @@ public class Credentials implements SecurityContext {
 
 	@Override
 	public boolean isSecure() {
-		// TODO
 		return false;
 	}
 

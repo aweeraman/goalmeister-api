@@ -14,6 +14,8 @@ import org.glassfish.jersey.server.ContainerRequest;
 
 import com.goalmeister.data.DaoFactory;
 import com.goalmeister.data.UserDao;
+import com.goalmeister.management.security.Credentials;
+import com.goalmeister.model.User;
 import com.goalmeister.model.UserToken;
 
 @Provider
@@ -42,7 +44,10 @@ public class OAuth2Filter implements ContainerRequestFilter,
 				String[] tokens = authHeader.split(" ");
 				UserToken token = userDao.findUserToken(tokens[1]);
 				if (token != null) {
-					// TODO Check expiration
+					// Tokens do not expire. If at a later point it needs to be expired
+					// the check would need to be done here.
+					User user = userDao.findUser(token.email);
+					request.setSecurityContext(new Credentials(user));
 				} else {
 					request.abortWith(Response.status(Status.FORBIDDEN).build());
 				}

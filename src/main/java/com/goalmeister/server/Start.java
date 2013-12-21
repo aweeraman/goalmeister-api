@@ -1,7 +1,6 @@
 package com.goalmeister.server;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,8 +29,9 @@ public class Start {
 		}
 
 		Map<String, String> initParams = new HashMap<String, String>();
-		initParams.put("jersey.config.server.provider.packages",
-				"com.goalmeister.services;com.goalmeister.management.services;com.goalmeister.management.filters");
+		initParams
+				.put("jersey.config.server.provider.packages",
+						"com.goalmeister.services;com.goalmeister.management.services;com.goalmeister.management.filters");
 		initParams.put("com.sun.jersey.spi.container.ContainerRequestFilters",
 				"com.goalmeister.management.filters.OAuth2Filter");
 		initParams.put("com.sun.jersey.spi.container.ContainerResponseFilters",
@@ -41,11 +41,6 @@ public class Start {
 		// exposing the Jersey application at BASE_URI
 		HttpServer httpServer = GrizzlyWebContainerFactory.create(
 				config.getBaseUri(), initParams);
-		//
-		// HttpServer httpServer = GrizzlyWebContainerFactory.create(config
-		// .getBaseUri(), Collections.singletonMap(
-		// "jersey.config.server.provider.packages",
-		// "com.goalmeister.services,com.goalmeister.management.services"));
 
 		// Configure a static handler for serving static content
 		StaticHttpHandler httpHandler = new StaticHttpHandler(

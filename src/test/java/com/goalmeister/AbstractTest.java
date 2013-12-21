@@ -7,7 +7,7 @@ import com.goalmeister.model.UserToken;
 
 public abstract class AbstractTest {
 
-	private UserDao userDao = DaoFactory.getUserDao();
+	protected UserDao userDao = DaoFactory.getUserDao();
 
 	private static final String TEST_USER = "test@goalmeister.com";
 	private static final String TEST_PASS = "password";

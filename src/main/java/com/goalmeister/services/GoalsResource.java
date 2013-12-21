@@ -2,6 +2,7 @@ package com.goalmeister.services;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,6 +18,7 @@ import com.goalmeister.model.Goal;
  * Goals service
  */
 @Path("goals")
+@PermitAll
 public class GoalsResource extends AbstractResource {
 
 	@GET

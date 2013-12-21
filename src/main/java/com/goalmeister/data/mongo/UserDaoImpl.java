@@ -54,4 +54,9 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 		return col_token.findOne(obj);
 	}
 
+	@Override
+	public void saveUser(User user) {
+		col_user.save(user);
+	}
+	
 }

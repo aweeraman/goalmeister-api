@@ -19,4 +19,6 @@ public interface UserDao {
 	
 	public void invalidateToken(String token);
 	
+	public void saveUser(User user);
+	
 }
