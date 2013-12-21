@@ -43,4 +43,9 @@ public class ApplicationDaoImpl extends AbstractDao implements ApplicationDao {
 		return col_app.save(application).getSavedObject();
 	}
 
+	@Override
+	public Application update(Application application) {
+		return col_app.save(application).getSavedObject();
+	}
+
 }

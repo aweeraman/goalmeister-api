@@ -10,4 +10,6 @@ public interface ApplicationDao {
 	
 	public Application create();
 	
+	public Application update(Application application);
+	
 }

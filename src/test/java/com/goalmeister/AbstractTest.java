@@ -32,16 +32,16 @@ public abstract class AbstractTest {
 	public UserToken getTemporaryAuthToken() {
 		UserToken token = new UserToken();
 		token.email = TEST_USER;
-		token.token = "52af58b76ebccbae2923a400";
+		token.access_token = "52af58b76ebccbae2923a400";
 		return userDao.newSession(token);
 	}
 	
 	public void removeTemporaryAuthToken(UserToken token) {
-		userDao.invalidateToken(token.token);
+		userDao.invalidateToken(token.access_token);
 	}
 	
 	public String authHeader(UserToken token) {
-		return "Bearer " + token.token;
+		return "Bearer " + token.access_token;
 	}
 
 }

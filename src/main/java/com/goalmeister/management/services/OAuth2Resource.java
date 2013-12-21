@@ -82,7 +82,7 @@ public class OAuth2Resource extends AbstractResource {
 			// Return the token
 			OAuthResponse response = OAuthASResponse
 					.tokenResponse(HttpServletResponse.SC_OK)
-					.setAccessToken(token.token).setExpiresIn("3600")
+					.setAccessToken(token.access_token).setExpiresIn("3600")
 					.buildJSONMessage();
 
 			return Response.status(response.getResponseStatus())

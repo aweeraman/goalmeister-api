@@ -32,7 +32,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
 	@Override
 	public UserToken findUserToken(String token) {
-		BasicDBObject obj = new BasicDBObject("token", token);
+		BasicDBObject obj = new BasicDBObject("access_token", token);
 		return col_token.findOne(obj);
 	}
 
@@ -48,7 +48,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
 	@Override
 	public void invalidateToken(String token) {
-		BasicDBObject obj = new BasicDBObject("token", token);
+		BasicDBObject obj = new BasicDBObject("access_token", token);
 		col_token.remove(obj);
 	}
 

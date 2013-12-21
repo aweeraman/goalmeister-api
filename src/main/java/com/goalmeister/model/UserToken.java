@@ -7,7 +7,8 @@ public class UserToken {
 	@ObjectId
 	public String _id;
 	public String email;
-	public String token;
+	public String access_token;
+	public int expires_in;
 	
 	public UserToken() {
 		// empty - needed for serialization
@@ -15,7 +16,7 @@ public class UserToken {
 	
 	public UserToken(String email, String token) {
 		this.email = email;
-		this.token = token;
+		this.access_token = token;
 	}
 
 }

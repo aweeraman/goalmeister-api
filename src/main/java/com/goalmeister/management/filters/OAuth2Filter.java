@@ -45,47 +45,61 @@ public class OAuth2Filter implements ContainerRequestFilter,
 					.getHeaderString(ContainerRequest.AUTHORIZATION);
 
 			if (authHeader == null || (!authHeader.startsWith("Bearer "))) {
-				
+
 				// Return 403 if no bearer token is present
-				request.abortWith(Response.status(Status.FORBIDDEN).build());
+				forbidden(request);
+				
 			} else {
 				String[] tokens = authHeader.split(" ");
 				UserToken token = userDao.findUserToken(tokens[1]);
 				if (token != null) {
-					// Tokens do not expire. If at a later point it needs to be expired
+					// Tokens do not expire. If at a later point it needs to be
+					// expired
 					// the check would need to be done here.
 					User user = userDao.findUser(token.email);
-					
+
 					// Set the security context so that further authorization
 					// can be performed in the RESTful services
 					request.setSecurityContext(new Credentials(user));
 				} else {
-					
+
 					// Invalid token. Possible break-in attempt.
 					// TODO log this
-					request.abortWith(Response.status(Status.FORBIDDEN).build());
+					forbidden(request);
 				}
 			}
 		} else {
 			// Handle basic authentication for the token endpoint
 			String authHeader = request
 					.getHeaderString(ContainerRequest.AUTHORIZATION);
-			
+
 			if (authHeader == null || (!authHeader.startsWith("Basic "))) {
-				
+
 				// The token endpoint requires BASIC authentication
 				request.abortWith(Response.status(Status.FORBIDDEN).build());
-				
+
 			} else {
 				String[] tokens = authHeader.split(" ");
 				tokens = Base64.decodeAsString(tokens[1]).split(":");
-				
+
 				Application app = applicationDao.findByClientId(tokens[0]);
+
+				if (app == null) {
+					forbidden(request);
+				}
+
+				if (!(app.secret.equals(tokens[1]))) {
+					forbidden(request);
+				}
 				
-				if (! ((app != null) && app.secret.equals(tokens[1])) && app.enabled.booleanValue()) {
-					request.abortWith(Response.status(Status.FORBIDDEN).build());
+				if (! app.enabled.booleanValue()) {
+					forbidden(request);
 				}
 			}
 		}
+	}
+
+	public void forbidden(ContainerRequestContext request) {
+		request.abortWith(Response.status(Status.FORBIDDEN).build());
 	}
 }
