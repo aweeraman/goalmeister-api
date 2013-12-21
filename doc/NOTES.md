@@ -4,7 +4,7 @@ NOTES
 # Feature backlog
 * Externalize configuration (port, location of HTML) in YAML file - done 12/16
 * OAuth2 / security - done 12/21
-  * Basic auth using client credentials for token endpoint
+  * Basic auth using client credentials for token endpoint - done 12/22
   * Role based authorization - done 12/21
   * Multi-tenancy for the users - done 12/21
   * SSL

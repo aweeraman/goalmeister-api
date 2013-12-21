@@ -1,5 +1,6 @@
 package com.goalmeister;
 
+import com.goalmeister.data.ApplicationDao;
 import com.goalmeister.data.DaoFactory;
 import com.goalmeister.data.UserDao;
 import com.goalmeister.model.User;
@@ -8,6 +9,7 @@ import com.goalmeister.model.UserToken;
 public abstract class AbstractTest {
 
 	protected UserDao userDao = DaoFactory.getUserDao();
+	protected ApplicationDao applicationDao = DaoFactory.getApplicationDao();
 
 	private static final String TEST_USER = "test@goalmeister.com";
 	private static final String TEST_PASS = "password";
