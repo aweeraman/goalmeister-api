@@ -8,6 +8,7 @@ import org.mongojack.JacksonDBCollection;
 
 import com.goalmeister.data.GoalDao;
 import com.goalmeister.model.Goal;
+import com.mongodb.BasicDBObject;
 
 public class GoalDaoImpl extends AbstractDao implements GoalDao {
 
@@ -15,8 +16,9 @@ public class GoalDaoImpl extends AbstractDao implements GoalDao {
 			db.getCollection("goals"), Goal.class, String.class);
 	
 	@Override
-	public List<Goal> list() {
-		DBCursor<Goal> cursor = col_goals.find();	
+	public List<Goal> list(String tenant) {
+		BasicDBObject obj = new BasicDBObject("tenant", tenant);
+		DBCursor<Goal> cursor = col_goals.find(obj);	
 		List<Goal> goals = new LinkedList<Goal>();
 		Goal goal;
 		while (cursor.hasNext()) {

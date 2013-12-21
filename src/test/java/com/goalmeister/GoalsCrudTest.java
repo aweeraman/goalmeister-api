@@ -4,6 +4,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 import junit.framework.Assert;
 
@@ -77,10 +78,10 @@ public class GoalsCrudTest extends AbstractTest {
 		target.request().header("Authorization", authHeader(userToken))
 				.buildDelete().invoke();
 		
-		Goal deletedGoal = target.request()
+		Response deletedResponse = target.request()
 				.header("Authorization", authHeader(userToken))
-				.accept("application/json").buildGet().invoke(Goal.class);
+				.accept("application/json").buildGet().invoke();
 
-		Assert.assertTrue(deletedGoal == null);
+		Assert.assertTrue(deletedResponse.getStatus() == 404);
 	}
 }

@@ -6,7 +6,7 @@ import com.goalmeister.model.Goal;
 
 public interface GoalDao {
 
-	public List<Goal> list();
+	public List<Goal> list(String tenant);
 	
 	public Goal save(Goal goal);
 		
