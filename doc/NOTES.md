@@ -6,13 +6,14 @@ NOTES
 * OAuth2 / security - done 12/21
   * Basic auth using client credentials for token endpoint
   * Role based authorization - done 12/21
-  * Multi-tenancy for the users
+  * Multi-tenancy for the users - done 12/21
+  * SSL
 * MongoDB integration - done 12/16
 * Serialization and object binding - done 12/16
 * Services
   * Goals - crud operations done 12/16
   * Actions
-  * User management
+  * User management - done 12/21
   * Data sync
 * Metrics
 * Reverse Proxy (use two Grizzly instances)

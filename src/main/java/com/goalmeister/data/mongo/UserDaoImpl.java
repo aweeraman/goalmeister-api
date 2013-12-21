@@ -1,5 +1,9 @@
 package com.goalmeister.data.mongo;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.mongojack.DBCursor;
 import org.mongojack.JacksonDBCollection;
 
 import com.goalmeister.data.UserDao;
@@ -57,6 +61,18 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 	@Override
 	public void saveUser(User user) {
 		col_user.save(user);
+	}
+
+	@Override
+	public List<User> list() {
+		DBCursor<User> cursor = col_user.find();
+		List<User> users = new LinkedList<User>();
+		User user;
+		while (cursor.hasNext()) {
+			user = cursor.next();
+			users.add(user);
+		}
+		return users;
 	}
 	
 }

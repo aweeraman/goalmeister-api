@@ -52,7 +52,7 @@ public class AuthorizationTest extends AbstractTest {
 		newUser.role = "user";
 
 		target = client.target(Configuration.getInstance().getBaseUri()
-				+ "/admin/user");
+				+ "/admin/users");
 		
 		Response response = target.request()
 				.header("Authorization", authHeader(userToken))

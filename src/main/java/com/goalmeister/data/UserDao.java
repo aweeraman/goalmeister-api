@@ -1,10 +1,14 @@
 package com.goalmeister.data;
 
+import java.util.List;
+
 import com.goalmeister.model.User;
 import com.goalmeister.model.UserToken;
 
 public interface UserDao {
 
+	public List<User> list();
+	
 	public User findUser(String email);
 	
 	public UserToken newSession(UserToken token);

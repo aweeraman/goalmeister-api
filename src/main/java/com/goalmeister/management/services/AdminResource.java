@@ -1,8 +1,10 @@
 package com.goalmeister.management.services;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -24,7 +26,7 @@ public class AdminResource extends AbstractResource {
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	@Path("/user")
+	@Path("/users")
 	public Response createUser(User user) {
 		if (securityContext.isUserInRole("admin")) {
 			return Response.ok().entity(userDao.newUser(user)).build();
@@ -32,4 +34,13 @@ public class AdminResource extends AbstractResource {
 		return Response.status(Status.FORBIDDEN).build();
 	}
 
+	@DELETE
+	@Path("/users/{id}")
+	public Response deleteUser(@PathParam("id") String id) {
+		if (securityContext.isUserInRole("admin")) {
+			userDao.deleteUserById(id);
+			return Response.ok().build();
+		}
+		return Response.status(Status.FORBIDDEN).build();
+	}
 }
