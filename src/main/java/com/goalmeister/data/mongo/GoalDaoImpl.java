@@ -11,12 +11,12 @@ import com.goalmeister.model.Goal;
 
 public class GoalDaoImpl extends AbstractDao implements GoalDao {
 
-	JacksonDBCollection<Goal, String> coll = JacksonDBCollection.wrap(
+	private JacksonDBCollection<Goal, String> col_goals = JacksonDBCollection.wrap(
 			db.getCollection("goals"), Goal.class, String.class);
 	
 	@Override
 	public List<Goal> list() {
-		DBCursor<Goal> cursor = coll.find();	
+		DBCursor<Goal> cursor = col_goals.find();	
 		List<Goal> goals = new LinkedList<Goal>();
 		Goal goal;
 		while (cursor.hasNext()) {
@@ -27,16 +27,16 @@ public class GoalDaoImpl extends AbstractDao implements GoalDao {
 	}
 	
 	public Goal save(Goal goal) {
-		return coll.save(goal).getSavedObject();
+		return col_goals.save(goal).getSavedObject();
 	}
 
 	@Override
 	public void delete(String id) {
-		coll.removeById(id);
+		col_goals.removeById(id);
 	}
 
 	@Override
 	public Goal findById(String id) {
-		return coll.findOneById(id);
+		return col_goals.findOneById(id);
 	}
 }

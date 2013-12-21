@@ -1,17 +1,13 @@
 package com.goalmeister.server;
 
 import java.io.IOException;
-import java.net.URI;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
-import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.server.ResourceConfig;
-
-import com.goalmeister.management.filters.OAuth2Filter;
-import com.goalmeister.management.services.OAuth2Resource;
-import com.goalmeister.services.GoalsResource;
-import com.goalmeister.services.PingResource;
+import org.glassfish.jersey.grizzly2.servlet.GrizzlyWebContainerFactory;
 
 /**
  * Main class.
@@ -25,36 +21,36 @@ public class Start {
 	 * 
 	 * @return Grizzly HTTP server.
 	 */
-	public static HttpServer startServer(Configuration config) {
+	public static HttpServer startServer(Configuration config)
+			throws IOException {
 
 		// Load default values
 		if (config == null) {
 			config = Configuration.getInstance();
 		}
 
-		// create a resource config that scans for JAX-RS resources and
-		// providers in com.goalmeister package
-		final ResourceConfig rc = new ResourceConfig()
-				.packages("com.goalmeister");
-
-		// Register resources
-		rc.register(PingResource.class);
-		rc.register(GoalsResource.class);
-
-		// Register authorization services filters
-		rc.register(OAuth2Resource.class);
-		rc.register(OAuth2Filter.class);
+		Map<String, String> initParams = new HashMap<String, String>();
+		initParams.put("jersey.config.server.provider.packages",
+				"com.goalmeister.services;com.goalmeister.management.services;com.goalmeister.management.filters");
+		initParams.put("com.sun.jersey.spi.container.ContainerRequestFilters",
+				"com.goalmeister.management.filters.OAuth2Filter");
+		initParams.put("com.sun.jersey.spi.container.ContainerResponseFilters",
+				"com.goalmeister.management.filters.OAuth2Filter");
 
 		// create and start a new instance of grizzly http server
 		// exposing the Jersey application at BASE_URI
-		HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(
-				URI.create(config.getBaseUri()), rc);
+		HttpServer httpServer = GrizzlyWebContainerFactory.create(
+				config.getBaseUri(), initParams);
+		//
+		// HttpServer httpServer = GrizzlyWebContainerFactory.create(config
+		// .getBaseUri(), Collections.singletonMap(
+		// "jersey.config.server.provider.packages",
+		// "com.goalmeister.services,com.goalmeister.management.services"));
 
-		// These two attributes should be configurable through the YAML file
+		// Configure a static handler for serving static content
 		StaticHttpHandler httpHandler = new StaticHttpHandler(
 				config.getHtmlDirectory());
 		httpHandler.setFileCacheEnabled(config.isFileCacheEnabled());
-
 		httpServer.getServerConfiguration().addHttpHandler(httpHandler, "/");
 
 		return httpServer;
@@ -80,6 +76,6 @@ public class Start {
 						.format("Goalmeister API server started (%s/application.wadl)\nHit enter to stop it...",
 								config.getBaseUri()));
 		System.in.read();
-		server.stop();
+		server.shutdownNow();
 	}
 }

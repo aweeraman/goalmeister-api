@@ -15,26 +15,34 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.goalmeister.model.Goal;
+import com.goalmeister.model.User;
+import com.goalmeister.model.UserToken;
 import com.goalmeister.server.Configuration;
 import com.goalmeister.server.Start;
 
-public class GoalTest {
+public class GoalTest extends AbstractTest {
 
 	private Client client;
 	private ClientConfig clientConfig;
 	private HttpServer server;
 	private WebTarget target;
+	private User user;
+	private UserToken userToken;
 
 	@Before
 	public void setUp() throws Exception {
 		server = Start.startServer(null);
 		clientConfig = new ClientConfig().register(new JacksonFeature());
 		client = ClientBuilder.newClient(clientConfig);
+		user = getTestUser();
+		userToken = getTemporaryAuthToken();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		server.stop();
+		removeTestUser(user);
+		removeTemporaryAuthToken(userToken);
+		server.shutdownNow();
 	}
 
 	@Test
@@ -43,22 +51,36 @@ public class GoalTest {
 		goal.title = "abc";
 		goal.description = "pqr";
 
-		target = client.target(Configuration.getInstance().getBaseUri() + "/goals");
-		Goal returnedGoal = target.request().accept("application/json").buildPost(Entity.entity(goal, "application/json")).invoke(Goal.class);
+		target = client.target(Configuration.getInstance().getBaseUri()
+				+ "/goals");
 		
+		Goal returnedGoal = target.request()
+				.header("Authorization", authHeader(userToken))
+				.accept("application/json")
+				.buildPost(Entity.entity(goal, "application/json"))
+				.invoke(Goal.class);
+
 		Assert.assertEquals(goal.title, returnedGoal.title);
+
+		target = client.target(Configuration.getInstance().getBaseUri()
+				+ "/goals/" + returnedGoal._id);
 		
-		target = client.target(Configuration.getInstance().getBaseUri() + "/goals/" + returnedGoal._id);
-		Goal goalById = target.request().accept("application/json").buildGet()
-				.invoke(Goal.class);
-		
+		Goal goalById = target.request()
+				.header("Authorization", authHeader(userToken))
+				.accept("application/json").buildGet().invoke(Goal.class);
+
 		Assert.assertEquals(returnedGoal.title, goalById.title);
+
+		target = client.target(Configuration.getInstance().getBaseUri()
+				+ "/goals/" + goalById._id);
 		
-		target = client.target(Configuration.getInstance().getBaseUri() + "/goals/" + goalById._id);
-		target.request().buildDelete().invoke();
-		Goal deletedGoal = target.request().accept("application/json").buildGet()
-				.invoke(Goal.class);
+		target.request().header("Authorization", authHeader(userToken))
+				.buildDelete().invoke();
 		
+		Goal deletedGoal = target.request()
+				.header("Authorization", authHeader(userToken))
+				.accept("application/json").buildGet().invoke(Goal.class);
+
 		Assert.assertTrue(deletedGoal == null);
 	}
 }
