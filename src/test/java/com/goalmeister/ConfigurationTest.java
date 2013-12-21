@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.goalmeister.server.Configuration;
 
-public class YamlTest {
+public class ConfigurationTest {
 	
 	Configuration config = null;
 

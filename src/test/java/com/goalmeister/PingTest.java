@@ -16,7 +16,7 @@ import com.goalmeister.model.UserToken;
 import com.goalmeister.server.Configuration;
 import com.goalmeister.server.Start;
 
-public class PingResourceTest extends AbstractTest {
+public class PingTest extends AbstractTest {
 
 	private HttpServer server;
 	private WebTarget target;

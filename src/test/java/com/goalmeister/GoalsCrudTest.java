@@ -20,7 +20,7 @@ import com.goalmeister.model.UserToken;
 import com.goalmeister.server.Configuration;
 import com.goalmeister.server.Start;
 
-public class GoalTest extends AbstractTest {
+public class GoalsCrudTest extends AbstractTest {
 
 	private Client client;
 	private ClientConfig clientConfig;
