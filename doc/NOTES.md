@@ -18,6 +18,7 @@ NOTES
 * Metrics
 * Reverse Proxy (use two Grizzly instances)
 * Logger integration
+* Sonar integration - done 12/22
 
 
 ---
@@ -46,6 +47,11 @@ apib -w 5 -c 250 -d 20 http://localhost:8080/api/ping
 
 Username: aweeraman@gmail.com, Password: weeraman
 curl -v -H "Authorization: Basic aHR0cHdhdGNoOmY=" http://localhost:8080/api/oauth2/token
+
+# Sonar commands
+sonar.sh start
+mvn sonar:sonar
+http://localhost:9000
 ```
 
 ---

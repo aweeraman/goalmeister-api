@@ -27,3 +27,6 @@ tmp/**/*
 *.swp
 *~.nib
 local.properties
+
+# Tools
+.sonar/
