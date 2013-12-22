@@ -7,7 +7,7 @@ NOTES
   * Basic auth using client credentials for token endpoint - done 12/22
   * Role based authorization - done 12/21
   * Multi-tenancy for the users - done 12/21
-  * SSL
+  * SSL - terminate at nginx reverse proxy instead of Grizzly
 * MongoDB integration - done 12/16
 * Serialization and object binding - done 12/16
 * Services
@@ -16,7 +16,7 @@ NOTES
   * User management - done 12/21
   * Data sync
 * Metrics
-* Reverse Proxy (use two Grizzly instances)
+* Reverse Proxy (nginx)
 * Logger integration
 * Sonar integration - done 12/22
 
@@ -52,6 +52,14 @@ curl -v -H "Authorization: Basic aHR0cHdhdGNoOmY=" http://localhost:8080/api/oau
 sonar.sh start
 mvn sonar:sonar
 http://localhost:9000
+
+# SSL certificates
+keytool -genkey -keyalg RSA -alias devcert -keystore keystore.jks -storepass d3vp4ss -keysize 2048
+keytool -exportcert -keystore keystore.jks -file devcert.cer -alias devcert
+keytool -importcert -keystore truststore.jks -alias devcert -file devcert.cer 
+
+# To import the self-signed certificate to the system keystore (not a good idea)
+sudo keytool -import -keystore /Library/Java/Home/lib/security/cacerts -file devcert.cer -alias devcert
 ```
 
 ---
