@@ -26,8 +26,9 @@ public class OAuth2Filter implements ContainerRequestFilter,
 
 	private final String TOKEN_ENDPOINT = "/oauth2/token";
 
-	private UserDao userDao = DaoFactory.getUserDao();
-	private ApplicationDao applicationDao = DaoFactory.getApplicationDao();
+	private UserDao userDao = DaoFactory.getInstance().getUserDao();
+	private ApplicationDao applicationDao = DaoFactory.getInstance()
+			.getApplicationDao();
 
 	@Override
 	public void filter(ContainerRequestContext request,

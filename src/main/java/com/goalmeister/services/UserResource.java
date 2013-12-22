@@ -28,7 +28,7 @@ public class UserResource extends AbstractResource {
 	@Path("/users")
 	public Response createUser(User user) {
 		if (securityContext.isUserInRole("admin")) {
-			return Response.ok().entity(userDao.newUser(user)).build();
+			return Response.ok().entity(dao.getUserDao().newUser(user)).build();
 		}
 		return Response.status(Status.UNAUTHORIZED).build();
 	}
@@ -37,7 +37,7 @@ public class UserResource extends AbstractResource {
 	@Path("/users/{id}")
 	public Response deleteUser(@PathParam("id") String id) {
 		if (securityContext.isUserInRole("admin")) {
-			userDao.deleteUserById(id);
+			dao.getUserDao().deleteUserById(id);
 			return Response.ok().build();
 		}
 		return Response.status(Status.UNAUTHORIZED).build();

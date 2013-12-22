@@ -32,9 +32,9 @@ public abstract class AbstractTest {
 			.register(new JacksonFeature());
 	private Client client = ClientBuilder.newClient(clientConfig);
 
-	protected GoalDao goalDao = DaoFactory.getGoalDao();
-	protected UserDao userDao = DaoFactory.getUserDao();
-	protected ApplicationDao applicationDao = DaoFactory.getApplicationDao();
+	protected GoalDao goalDao = DaoFactory.getInstance().getGoalDao();
+	protected UserDao userDao = DaoFactory.getInstance().getUserDao();
+	protected ApplicationDao applicationDao = DaoFactory.getInstance().getApplicationDao();
 
 	private static final String TEST_USER_BOB = "bob_test@goalmeister.com";
 	private static final String TEST_USER_ALICE = "alice_test@goalmeister.com";

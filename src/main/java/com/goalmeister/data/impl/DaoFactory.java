@@ -6,19 +6,31 @@ import com.goalmeister.data.UserDao;
 
 public class DaoFactory {
 
+	private static DaoFactory daoFactory = new DaoFactory();
+
+	private static UserDao userDao;
+	private static GoalDao goalDao;
+	private static ApplicationDao applicationDao;
+
 	private DaoFactory() {
-		// private constructor
+		userDao = new UserDaoImpl();
+		goalDao = new GoalDaoImpl();
+		applicationDao = new ApplicationDaoImpl();
 	}
 
-	public static UserDao getUserDao() {
-		return new UserDaoImpl();
+	public static DaoFactory getInstance() {
+		return daoFactory;
 	}
 
-	public static GoalDao getGoalDao() {
-		return new GoalDaoImpl();
+	public UserDao getUserDao() {
+		return userDao;
 	}
 
-	public static ApplicationDao getApplicationDao() {
-		return new ApplicationDaoImpl();
+	public GoalDao getGoalDao() {
+		return goalDao;
+	}
+
+	public ApplicationDao getApplicationDao() {
+		return applicationDao;
 	}
 }

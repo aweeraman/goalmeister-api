@@ -33,7 +33,7 @@ public class GoalsResource extends AbstractResource {
 	public List<Goal> list() {
 		// Pass the tenant information to the DAO so that the data can be
 		// filtered based on the authenticated user
-		return goalDao.list(securityContext.getUserPrincipal().getName());
+		return dao.getGoalDao().list(securityContext.getUserPrincipal().getName());
 	}
 
 	@GET
@@ -43,7 +43,7 @@ public class GoalsResource extends AbstractResource {
 		try {
 			// Check if a goal already exists, and if so, use that for checking
 			// ownership
-			Goal goal = goalDao.findById(id);
+			Goal goal = dao.getGoalDao().findById(id);
 			// Check if the tenant of the returned object is the same as the
 			// authenticated user. This will prevent access to other user's data
 			// by manually crafting requests.
@@ -69,7 +69,7 @@ public class GoalsResource extends AbstractResource {
 		if (goal._id != null) {
 			// Check if a goal already exists, and if so, use that for checking
 			// ownership
-			Goal existingGoal = goalDao.findById(goal._id);
+			Goal existingGoal = dao.getGoalDao().findById(goal._id);
 			if (!(securityContext.getUserPrincipal().getName()
 					.equals(existingGoal.tenant) && securityContext
 					.getUserPrincipal().getName().equals(goal.tenant))) {
@@ -81,7 +81,7 @@ public class GoalsResource extends AbstractResource {
 		goal.tenant = securityContext.getUserPrincipal().getName();
 
 		// Return 200 and the saved object
-		return Response.ok().entity(goalDao.save(goal)).build();
+		return Response.ok().entity(dao.getGoalDao().save(goal)).build();
 	}
 
 	@DELETE
@@ -90,7 +90,7 @@ public class GoalsResource extends AbstractResource {
 		try {
 			// Check if a goal already exists, and if so, use that for checking
 			// ownership
-			Goal existingGoal = goalDao.findById(id);
+			Goal existingGoal = dao.getGoalDao().findById(id);
 			if (existingGoal == null) {
 				return Response.status(Status.NOT_FOUND).build();
 			}
@@ -100,7 +100,7 @@ public class GoalsResource extends AbstractResource {
 			}
 
 			// User has been checked out, go ahead and delete
-			goalDao.delete(id);
+			dao.getGoalDao().delete(id);
 
 			// Return 200
 			return Response.ok().build();

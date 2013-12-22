@@ -48,7 +48,7 @@ public class OAuth2Resource extends AbstractResource {
 						tokenRequest.getPassword())) {
 
 					OAuthResponse response = OAuthASResponse
-							.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+							.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
 							.setError(OAuthError.TokenResponse.INVALID_REQUEST)
 							.setErrorDescription("invalid username or password")
 							.buildJSONMessage();
@@ -69,12 +69,12 @@ public class OAuth2Resource extends AbstractResource {
 			}
 
 			// Check if a token already exists
-			UserToken token = userDao.findUserTokenByUsername(tokenRequest.getUsername());
+			UserToken token = dao.getUserDao().findUserTokenByUsername(tokenRequest.getUsername());
 			
 			// Create new token otherwise
 			if (token == null) {
 				String accessToken = issuer.accessToken();
-				token = userDao.newSession(new UserToken(tokenRequest.getUsername(),
+				token = dao.getUserDao().newSession(new UserToken(tokenRequest.getUsername(),
 						accessToken));
 			}
 
@@ -98,7 +98,7 @@ public class OAuth2Resource extends AbstractResource {
 	}
 
 	private boolean isValidUser(String username, String password) {
-		User user = userDao.findUser(username);
+		User user = dao.getUserDao().findUser(username);
 		if (user != null && password != null && password.equals(user.password)) {
 			return true;
 		}
@@ -116,7 +116,7 @@ public class OAuth2Resource extends AbstractResource {
 			return Response.serverError().build();
 		}
 		
-		userDao.invalidateToken(token);
+		dao.getUserDao().invalidateToken(token);
 		return Response.ok().build();
 	}
 
