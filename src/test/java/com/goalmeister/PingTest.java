@@ -20,7 +20,7 @@ public class PingTest extends AbstractTest {
 	@Before
 	public void setUp() throws Exception {
 		startServer();
-		user = getTestUser();
+		user = getTestUserBob();
 		application = getApplication();
 		userToken = getAuthToken(user, application);
 	}

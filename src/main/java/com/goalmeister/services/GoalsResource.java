@@ -70,8 +70,9 @@ public class GoalsResource extends AbstractResource {
 			// Check if a goal already exists, and if so, use that for checking
 			// ownership
 			Goal existingGoal = goalDao.findById(goal._id);
-			if (!securityContext.getUserPrincipal().getName()
-					.equals(existingGoal.tenant)) {
+			if (!(securityContext.getUserPrincipal().getName()
+					.equals(existingGoal.tenant) && securityContext
+					.getUserPrincipal().getName().equals(goal.tenant))) {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
 		}
@@ -90,8 +91,11 @@ public class GoalsResource extends AbstractResource {
 			// Check if a goal already exists, and if so, use that for checking
 			// ownership
 			Goal existingGoal = goalDao.findById(id);
-			if (!securityContext.getUserPrincipal().getName()
-					.equals(existingGoal.tenant)) {
+			if (existingGoal == null) {
+				return Response.status(Status.NOT_FOUND).build();
+			}
+			if (!(securityContext.getUserPrincipal().getName()
+					.equals(existingGoal.tenant))) {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
 

@@ -17,6 +17,7 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 
 import com.goalmeister.data.ApplicationDao;
 import com.goalmeister.data.DaoFactory;
+import com.goalmeister.data.GoalDao;
 import com.goalmeister.data.UserDao;
 import com.goalmeister.model.Application;
 import com.goalmeister.model.User;
@@ -31,10 +32,12 @@ public abstract class AbstractTest {
 			.register(new JacksonFeature());
 	private Client client = ClientBuilder.newClient(clientConfig);
 
+	protected GoalDao goalDao = DaoFactory.getGoalDao();
 	protected UserDao userDao = DaoFactory.getUserDao();
 	protected ApplicationDao applicationDao = DaoFactory.getApplicationDao();
 
-	private static final String TEST_USER = "test@goalmeister.com";
+	private static final String TEST_USER_BOB = "bob_test@goalmeister.com";
+	private static final String TEST_USER_ALICE = "alice_test@goalmeister.com";
 	private static final String TEST_PASS = "password";
 
 	public void startServer() {
@@ -59,11 +62,22 @@ public abstract class AbstractTest {
 		applicationDao.deleteByClientId(application.clientId);
 	}
 
-	public User getTestUser() {
-		User user = userDao.findUser(TEST_USER);
+	public User getTestUserBob() {
+		User user = userDao.findUser(TEST_USER_BOB);
 		if (user == null) {
 			user = new User();
-			user.email = TEST_USER;
+			user.email = TEST_USER_BOB;
+			user.password = TEST_PASS;
+			user = userDao.newUser(user);
+		}
+		return user;
+	}
+	
+	public User getTestUserAlice() {
+		User user = userDao.findUser(TEST_USER_ALICE);
+		if (user == null) {
+			user = new User();
+			user.email = TEST_USER_ALICE;
 			user.password = TEST_PASS;
 			user = userDao.newUser(user);
 		}
@@ -77,6 +91,12 @@ public abstract class AbstractTest {
 				.accept("application/json")
 				.buildPost(Entity.entity(object, "application/json")).invoke();
 	}
+	
+	public Response responseForGet(String path, UserToken userToken) {
+		return getTarget(path).request()
+				.header("Authorization", bearerHeader(userToken))
+				.accept("application/json").buildGet().invoke();
+	}
 
 	public Object objectForPost(String path, Object object,
 			UserToken userToken, Class clazz) {
@@ -85,6 +105,13 @@ public abstract class AbstractTest {
 				.accept("application/json")
 				.buildPost(Entity.entity(object, "application/json"))
 				.invoke(clazz);
+	}
+
+	public Object objectForGet(String path, UserToken userToken,
+			Class clazz) {
+		return (Object) getTarget(path).request()
+				.header("Authorization", bearerHeader(userToken))
+				.accept("application/json").buildGet().invoke(clazz);
 	}
 
 	public MultivaluedMap<String, String> getAuthForm(User user,
@@ -131,13 +158,6 @@ public abstract class AbstractTest {
 
 	public void releaseTestUser(User user) {
 		userDao.deleteUserById(user._id);
-	}
-
-	public UserToken getAuthToken() {
-		UserToken token = new UserToken();
-		token.email = TEST_USER;
-		token.access_token = "52af58b76ebccbae2923a400";
-		return userDao.newSession(token);
 	}
 
 	public void releaseAuthToken(UserToken token) {
