@@ -31,7 +31,7 @@ public class AuthorizationTest extends AbstractTest {
 		releaseAuthToken(userToken);
 		stopServer();
 	}
-	
+
 	public User getUserObject() {
 		User testUser = new User();
 		testUser.email = "temp@goalmeister.com";
@@ -43,25 +43,38 @@ public class AuthorizationTest extends AbstractTest {
 	@Test
 	public void forbiddenIfNotAdmin() {
 		User testUser = getUserObject();
-		
+
 		Response response = responseForPost("/admin/users", testUser, userToken);
-		Assert.assertEquals(response.getStatus(), 403);
+		Assert.assertEquals(401, response.getStatus());
+
+		response = (Response) getTarget("/admin/users/" + user._id).request()
+				.header("Authorization", bearerHeader(userToken)).buildDelete()
+				.invoke();
+		Assert.assertEquals(401, response.getStatus());
 	}
-	
+
 	@Test
 	public void allowIfAdmin() {
 		User testUser = getUserObject();
-		
+
 		// Provide the test user with admin privileges
 		user.role = "admin";
 		userDao.saveUser(user);
 
+		// Check if admin can create users
 		User createdUser = (User) objectForPost("/admin/users", testUser,
 				userToken, User.class);
 		Assert.assertEquals(testUser.email, createdUser.email);
 		Assert.assertNotNull(createdUser._id);
 
-		// Clean up
-		userDao.deleteUserById(createdUser._id);
+		// Check if admin can delete users
+		Response response = (Response) getTarget("/admin/users/" + createdUser._id).request()
+				.header("Authorization", bearerHeader(userToken)).buildDelete()
+				.invoke();
+		Assert.assertEquals(200, response.getStatus());
+		
+		// Provide the test user with admin privileges
+		user.role = "user";
+		userDao.saveUser(user);
 	}
 }

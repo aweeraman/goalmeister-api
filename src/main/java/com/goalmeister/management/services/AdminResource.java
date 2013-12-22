@@ -31,7 +31,7 @@ public class AdminResource extends AbstractResource {
 		if (securityContext.isUserInRole("admin")) {
 			return Response.ok().entity(userDao.newUser(user)).build();
 		}
-		return Response.status(Status.FORBIDDEN).build();
+		return Response.status(Status.UNAUTHORIZED).build();
 	}
 
 	@DELETE
@@ -41,6 +41,6 @@ public class AdminResource extends AbstractResource {
 			userDao.deleteUserById(id);
 			return Response.ok().build();
 		}
-		return Response.status(Status.FORBIDDEN).build();
+		return Response.status(Status.UNAUTHORIZED).build();
 	}
 }
