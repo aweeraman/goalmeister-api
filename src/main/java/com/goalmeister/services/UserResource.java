@@ -1,4 +1,4 @@
-package com.goalmeister.management.services;
+package com.goalmeister.services;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 import com.goalmeister.model.User;
-import com.goalmeister.services.AbstractResource;
 
 /**
  * Goals service

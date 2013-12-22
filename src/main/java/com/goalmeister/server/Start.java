@@ -29,13 +29,12 @@ public class Start {
 		}
 
 		Map<String, String> initParams = new HashMap<String, String>();
-		initParams
-				.put("jersey.config.server.provider.packages",
-						"com.goalmeister.services;com.goalmeister.management.services;com.goalmeister.management.filters");
+		initParams.put("jersey.config.server.provider.packages",
+				"com.goalmeister.services;com.goalmeister.security");
 		initParams.put("com.sun.jersey.spi.container.ContainerRequestFilters",
-				"com.goalmeister.management.filters.OAuth2Filter");
+				"com.goalmeister.security.OAuth2Filter");
 		initParams.put("com.sun.jersey.spi.container.ContainerResponseFilters",
-				"com.goalmeister.management.filters.OAuth2Filter");
+				"com.goalmeister.security.OAuth2Filter");
 
 		// create and start a new instance of grizzly http server
 		// exposing the Jersey application at BASE_URI

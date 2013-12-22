@@ -1,4 +1,4 @@
-package com.goalmeister.management.services;
+package com.goalmeister.services;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +23,6 @@ import org.apache.oltu.oauth2.common.message.types.GrantType;
 
 import com.goalmeister.model.User;
 import com.goalmeister.model.UserToken;
-import com.goalmeister.services.AbstractResource;
 
 /**
  * Goals service

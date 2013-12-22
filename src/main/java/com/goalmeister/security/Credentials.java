@@ -1,4 +1,4 @@
-package com.goalmeister.management.security;
+package com.goalmeister.security;
 
 import java.security.Principal;
 

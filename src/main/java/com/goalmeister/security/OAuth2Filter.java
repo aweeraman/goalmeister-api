@@ -1,4 +1,4 @@
-package com.goalmeister.management.filters;
+package com.goalmeister.security;
 
 import java.io.IOException;
 
@@ -16,7 +16,6 @@ import org.glassfish.jersey.server.ContainerRequest;
 import com.goalmeister.data.ApplicationDao;
 import com.goalmeister.data.DaoFactory;
 import com.goalmeister.data.UserDao;
-import com.goalmeister.management.security.Credentials;
 import com.goalmeister.model.Application;
 import com.goalmeister.model.User;
 import com.goalmeister.model.UserToken;
