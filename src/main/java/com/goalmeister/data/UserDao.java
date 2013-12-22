@@ -7,22 +7,22 @@ import com.goalmeister.model.UserToken;
 
 public interface UserDao {
 
-	public List<User> list();
-	
-	public User findUser(String email);
-	
-	public UserToken newSession(UserToken token);
-	
-	public UserToken findUserToken(String token);
-	
-	public UserToken findUserTokenByUsername(String username);
-	
-	public User newUser(User user);
-	
-	public void deleteUserById(String id);
-	
-	public void invalidateToken(String token);
-	
-	public void saveUser(User user);
-	
+	List<User> list();
+
+	User findUser(String email);
+
+	UserToken newSession(UserToken token);
+
+	UserToken findUserToken(String token);
+
+	UserToken findUserTokenByUsername(String username);
+
+	User newUser(User user);
+
+	void deleteUserById(String id);
+
+	void invalidateToken(String token);
+
+	void saveUser(User user);
+
 }

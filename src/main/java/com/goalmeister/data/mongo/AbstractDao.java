@@ -16,7 +16,7 @@ public abstract class AbstractDao {
 		if (client == null) {
 			client = getClient();
 		}
-		
+
 		if (db == null) {
 			db = getDb();
 		}

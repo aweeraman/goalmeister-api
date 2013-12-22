@@ -6,12 +6,12 @@ import com.goalmeister.model.Goal;
 
 public interface GoalDao {
 
-	public List<Goal> list(String tenant);
-	
-	public Goal save(Goal goal);
-		
-	public void delete(String id);
-	
-	public Goal findById(String id);
-	
+	List<Goal> list(String tenant);
+
+	Goal save(Goal goal);
+
+	void delete(String id);
+
+	Goal findById(String id);
+
 }

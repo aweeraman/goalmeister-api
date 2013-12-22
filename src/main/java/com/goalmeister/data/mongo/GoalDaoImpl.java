@@ -12,13 +12,13 @@ import com.mongodb.BasicDBObject;
 
 public class GoalDaoImpl extends AbstractDao implements GoalDao {
 
-	private JacksonDBCollection<Goal, String> col_goals = JacksonDBCollection.wrap(
-			db.getCollection("goals"), Goal.class, String.class);
-	
+	private JacksonDBCollection<Goal, String> col_goals = JacksonDBCollection
+			.wrap(db.getCollection("goals"), Goal.class, String.class);
+
 	@Override
 	public List<Goal> list(String tenant) {
 		BasicDBObject obj = new BasicDBObject("tenant", tenant);
-		DBCursor<Goal> cursor = col_goals.find(obj);	
+		DBCursor<Goal> cursor = col_goals.find(obj);
 		List<Goal> goals = new LinkedList<Goal>();
 		Goal goal;
 		while (cursor.hasNext()) {
@@ -27,7 +27,7 @@ public class GoalDaoImpl extends AbstractDao implements GoalDao {
 		}
 		return goals;
 	}
-	
+
 	public Goal save(Goal goal) {
 		return col_goals.save(goal).getSavedObject();
 	}

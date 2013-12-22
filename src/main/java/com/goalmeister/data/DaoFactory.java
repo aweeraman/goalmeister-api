@@ -5,7 +5,11 @@ import com.goalmeister.data.mongo.GoalDaoImpl;
 import com.goalmeister.data.mongo.UserDaoImpl;
 
 public class DaoFactory {
-	
+
+	private DaoFactory() {
+		// private constructor
+	}
+
 	public static UserDao getUserDao() {
 		return new UserDaoImpl();
 	}
@@ -13,7 +17,7 @@ public class DaoFactory {
 	public static GoalDao getGoalDao() {
 		return new GoalDaoImpl();
 	}
-	
+
 	public static ApplicationDao getApplicationDao() {
 		return new ApplicationDaoImpl();
 	}

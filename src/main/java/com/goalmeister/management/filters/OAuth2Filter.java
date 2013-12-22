@@ -48,7 +48,7 @@ public class OAuth2Filter implements ContainerRequestFilter,
 
 				// Return 403 if no bearer token is present
 				forbidden(request);
-				
+
 			} else {
 				String[] tokens = authHeader.split(" ");
 				UserToken token = userDao.findUserToken(tokens[1]);
@@ -91,8 +91,8 @@ public class OAuth2Filter implements ContainerRequestFilter,
 				if (!(app.secret.equals(tokens[1]))) {
 					forbidden(request);
 				}
-				
-				if (! app.enabled.booleanValue()) {
+
+				if (!app.enabled.booleanValue()) {
 					forbidden(request);
 				}
 			}

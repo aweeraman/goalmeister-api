@@ -10,7 +10,7 @@ public class Credentials implements SecurityContext {
 
 	private User user;
 	private Principal principal;
-	
+
 	public Credentials(final User user) {
 		this.user = user;
 		this.principal = new Principal() {
@@ -19,7 +19,7 @@ public class Credentials implements SecurityContext {
 			}
 		};
 	}
-	
+
 	@Override
 	public String getAuthenticationScheme() {
 		return SecurityContext.BASIC_AUTH;
