@@ -63,7 +63,7 @@ public class PingTest extends AbstractTest {
 
 	@After
 	public void tearDown() throws Exception {
-		removeTestUser(user);
+		releaseTestUser(user);
 		userDao.invalidateToken(userToken.access_token);
 		applicationDao.deleteByClientId(application.clientId);
 		server.shutdownNow();

@@ -36,13 +36,13 @@ public class GoalsCrudTest extends AbstractTest {
 		clientConfig = new ClientConfig().register(new JacksonFeature());
 		client = ClientBuilder.newClient(clientConfig);
 		user = getTestUser();
-		userToken = getTemporaryAuthToken();
+		userToken = getAuthToken();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		removeTestUser(user);
-		removeTemporaryAuthToken(userToken);
+		releaseTestUser(user);
+		releaseAuthToken(userToken);
 		server.shutdownNow();
 	}
 
