@@ -1,4 +1,4 @@
-package com.goalmeister.mongo;
+package com.goalmeister.data.impl;
 
 import java.util.LinkedList;
 import java.util.List;

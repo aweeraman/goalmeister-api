@@ -1,8 +1,8 @@
-package com.goalmeister.data;
+package com.goalmeister.data.impl;
 
-import com.goalmeister.mongo.ApplicationDaoImpl;
-import com.goalmeister.mongo.GoalDaoImpl;
-import com.goalmeister.mongo.UserDaoImpl;
+import com.goalmeister.data.ApplicationDao;
+import com.goalmeister.data.GoalDao;
+import com.goalmeister.data.UserDao;
 
 public class DaoFactory {
 

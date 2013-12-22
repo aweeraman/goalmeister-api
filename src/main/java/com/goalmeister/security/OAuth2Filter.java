@@ -14,8 +14,8 @@ import org.glassfish.jersey.internal.util.Base64;
 import org.glassfish.jersey.server.ContainerRequest;
 
 import com.goalmeister.data.ApplicationDao;
-import com.goalmeister.data.DaoFactory;
 import com.goalmeister.data.UserDao;
+import com.goalmeister.data.impl.DaoFactory;
 import com.goalmeister.model.Application;
 import com.goalmeister.model.User;
 import com.goalmeister.model.UserToken;
