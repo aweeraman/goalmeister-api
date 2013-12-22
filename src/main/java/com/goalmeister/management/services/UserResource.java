@@ -18,7 +18,7 @@ import com.goalmeister.services.AbstractResource;
  * Goals service
  */
 @Path("admin")
-public class AdminResource extends AbstractResource {
+public class UserResource extends AbstractResource {
 
 	@Context
 	private SecurityContext securityContext;
