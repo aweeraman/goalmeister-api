@@ -56,7 +56,7 @@ public class GoalsCrudTest extends AbstractTest {
 				+ "/goals");
 		
 		Goal returnedGoal = target.request()
-				.header("Authorization", authHeader(userToken))
+				.header("Authorization", bearerHeader(userToken))
 				.accept("application/json")
 				.buildPost(Entity.entity(goal, "application/json"))
 				.invoke(Goal.class);
@@ -67,7 +67,7 @@ public class GoalsCrudTest extends AbstractTest {
 				+ "/goals/" + returnedGoal._id);
 		
 		Goal goalById = target.request()
-				.header("Authorization", authHeader(userToken))
+				.header("Authorization", bearerHeader(userToken))
 				.accept("application/json").buildGet().invoke(Goal.class);
 
 		Assert.assertEquals(returnedGoal.title, goalById.title);
@@ -75,13 +75,13 @@ public class GoalsCrudTest extends AbstractTest {
 		target = client.target(Configuration.getInstance().getBaseUri()
 				+ "/goals/" + goalById._id);
 		
-		target.request().header("Authorization", authHeader(userToken))
+		target.request().header("Authorization", bearerHeader(userToken))
 				.buildDelete().invoke();
 		
 		Response deletedResponse = target.request()
-				.header("Authorization", authHeader(userToken))
+				.header("Authorization", bearerHeader(userToken))
 				.accept("application/json").buildGet().invoke();
 
-		Assert.assertTrue(deletedResponse.getStatus() == 404);
+		Assert.assertEquals(deletedResponse.getStatus(), 404);
 	}
 }

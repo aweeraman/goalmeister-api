@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.goalmeister.model.Application;
 import com.goalmeister.model.User;
 import com.goalmeister.model.UserToken;
 
@@ -14,12 +15,14 @@ public class AuthorizationTest extends AbstractTest {
 
 	private User user;
 	private UserToken userToken;
+	private Application application;
 
 	@Before
 	public void setUp() throws Exception {
 		startServer();
 		user = getTestUser();
-		userToken = getAuthToken();
+		application = getApplication();
+		userToken = getAuthToken(user, application);
 	}
 
 	@After
@@ -42,7 +45,7 @@ public class AuthorizationTest extends AbstractTest {
 		User testUser = getUserObject();
 		
 		Response response = responseForPost("/admin/users", testUser, userToken);
-		Assert.assertTrue(response.getStatus() == 403);
+		Assert.assertEquals(response.getStatus(), 403);
 	}
 	
 	@Test

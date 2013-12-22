@@ -6,15 +6,19 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.internal.util.Base64;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import com.goalmeister.data.ApplicationDao;
 import com.goalmeister.data.DaoFactory;
 import com.goalmeister.data.UserDao;
+import com.goalmeister.model.Application;
 import com.goalmeister.model.User;
 import com.goalmeister.model.UserToken;
 import com.goalmeister.server.Configuration;
@@ -47,6 +51,14 @@ public abstract class AbstractTest {
 		}
 	}
 
+	public Application getApplication() {
+		return applicationDao.create();
+	}
+
+	public void releaseApplication(Application application) {
+		applicationDao.deleteByClientId(application.clientId);
+	}
+
 	public User getTestUser() {
 		User user = userDao.findUser(TEST_USER);
 		if (user == null) {
@@ -61,7 +73,7 @@ public abstract class AbstractTest {
 	public Response responseForPost(String path, Object object,
 			UserToken userToken) {
 		return getTarget(path).request()
-				.header("Authorization", authHeader(userToken))
+				.header("Authorization", bearerHeader(userToken))
 				.accept("application/json")
 				.buildPost(Entity.entity(object, "application/json")).invoke();
 	}
@@ -69,10 +81,48 @@ public abstract class AbstractTest {
 	public Object objectForPost(String path, Object object,
 			UserToken userToken, Class clazz) {
 		return (Object) getTarget(path).request()
-				.header("Authorization", authHeader(userToken))
+				.header("Authorization", bearerHeader(userToken))
 				.accept("application/json")
 				.buildPost(Entity.entity(object, "application/json"))
 				.invoke(clazz);
+	}
+
+	public MultivaluedMap<String, String> getAuthForm(User user,
+			Application application) {
+		MultivaluedMap<String, String> map = new MultivaluedHashMap<String, String>();
+		map.putSingle("grant_type", "password");
+		map.putSingle("username", user.email);
+		map.putSingle("password", user.password);
+		map.putSingle("client_id", application.clientId);
+		map.putSingle("client_secret", application.secret);
+		return map;
+	}
+
+	public UserToken getAuthToken(User user, Application application) {
+		return getTarget("/oauth2/token")
+				.request()
+				.header("Authorization",
+						"Basic "
+								+ Base64.encodeAsString(application.clientId
+										+ ":" + application.secret))
+				.buildPost(Entity.form(getAuthForm(user, application)))
+				.invoke(UserToken.class);
+	}
+
+	public Response getAuthResponse(User user, Application application) {
+		return getTarget("/oauth2/token")
+				.request()
+				.header("Authorization",
+						"Basic "
+								+ Base64.encodeAsString(application.clientId
+										+ ":" + application.secret))
+				.buildPost(Entity.form(getAuthForm(user, application)))
+				.invoke();
+	}
+
+	public Response invalidateToken(UserToken userToken) {
+		return getTarget("/oauth2/invalidate_token").request()
+				.header("Authorization", bearerHeader(userToken)).get();
 	}
 
 	public WebTarget getTarget(String path) {
@@ -94,7 +144,7 @@ public abstract class AbstractTest {
 		userDao.invalidateToken(token.access_token);
 	}
 
-	public String authHeader(UserToken token) {
+	public String bearerHeader(UserToken token) {
 		return "Bearer " + token.access_token;
 	}
 
