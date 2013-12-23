@@ -30,94 +30,82 @@ import com.goalmeister.model.UserToken;
 @Path("oauth2")
 public class OAuth2Resource extends AbstractResource {
 
-	@POST
-	@Consumes("application/x-www-form-urlencoded")
-	@Produces("application/json")
-	@Path("/token")
-	public Response token(@Context HttpServletRequest request)
-			throws OAuthSystemException {
+  @POST
+  @Consumes("application/x-www-form-urlencoded")
+  @Produces("application/json")
+  @Path("/token")
+  public Response token(@Context HttpServletRequest request) throws OAuthSystemException {
 
-		try {
-			OAuthTokenRequest tokenRequest = new OAuthTokenRequest(request);
-			OAuthIssuerImpl issuer = new OAuthIssuerImpl(new MD5Generator());
+    try {
+      OAuthTokenRequest tokenRequest = new OAuthTokenRequest(request);
+      OAuthIssuerImpl issuer = new OAuthIssuerImpl(new MD5Generator());
 
-			if (tokenRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(
-					GrantType.PASSWORD.toString())) {
+      if (tokenRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(GrantType.PASSWORD.toString())) {
 
-				if (!isValidUser(tokenRequest.getUsername(),
-						tokenRequest.getPassword())) {
+        if (!isValidUser(tokenRequest.getUsername(), tokenRequest.getPassword())) {
 
-					OAuthResponse response = OAuthASResponse
-							.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-							.setError(OAuthError.TokenResponse.INVALID_REQUEST)
-							.setErrorDescription("invalid username or password")
-							.buildJSONMessage();
+          OAuthResponse response =
+              OAuthASResponse.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
+                  .setError(OAuthError.TokenResponse.INVALID_REQUEST)
+                  .setErrorDescription("invalid username or password").buildJSONMessage();
 
-					return Response.status(response.getResponseStatus())
-							.entity(response.getBody()).build();
-				}
-			} else {
-				OAuthResponse response = OAuthASResponse
-						.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
-						.setError(
-								OAuthError.TokenResponse.UNSUPPORTED_GRANT_TYPE)
-						.setErrorDescription("unsupported grant type")
-						.buildJSONMessage();
+          return Response.status(response.getResponseStatus()).entity(response.getBody()).build();
+        }
+      } else {
+        OAuthResponse response =
+            OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                .setError(OAuthError.TokenResponse.UNSUPPORTED_GRANT_TYPE)
+                .setErrorDescription("unsupported grant type").buildJSONMessage();
 
-				return Response.status(response.getResponseStatus())
-						.entity(response.getBody()).build();
-			}
+        return Response.status(response.getResponseStatus()).entity(response.getBody()).build();
+      }
 
-			// Check if a token already exists
-			UserToken token = dao.getUserDao().findUserTokenByUsername(tokenRequest.getUsername());
-			
-			// Create new token otherwise
-			if (token == null) {
-				String accessToken = issuer.accessToken();
-				token = dao.getUserDao().newSession(new UserToken(tokenRequest.getUsername(),
-						accessToken));
-			}
+      // Check if a token already exists
+      UserToken token = dao.getUserDao().findUserTokenByUsername(tokenRequest.getUsername());
 
-			// Return the token
-			OAuthResponse response = OAuthASResponse
-					.tokenResponse(HttpServletResponse.SC_OK)
-					.setAccessToken(token.access_token).setExpiresIn("3600")
-					.buildJSONMessage();
+      // Create new token otherwise
+      if (token == null) {
+        String accessToken = issuer.accessToken();
+        token = dao.getUserDao().newSession(new UserToken(tokenRequest.getUsername(), accessToken));
+      }
 
-			return Response.status(response.getResponseStatus())
-					.entity(response.getBody()).build();
+      // Return the token
+      OAuthResponse response =
+          OAuthASResponse.tokenResponse(HttpServletResponse.SC_OK)
+              .setAccessToken(token.access_token).setExpiresIn("3600").buildJSONMessage();
 
-		} catch (OAuthProblemException e) {
-			OAuthResponse res = OAuthASResponse
-					.errorResponse(HttpServletResponse.SC_BAD_REQUEST).error(e)
-					.buildJSONMessage();
+      return Response.status(response.getResponseStatus()).entity(response.getBody()).build();
 
-			return Response.status(res.getResponseStatus())
-					.entity(res.getBody()).build();
-		}
-	}
+    } catch (OAuthProblemException e) {
+      OAuthResponse res =
+          OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST).error(e)
+              .buildJSONMessage();
 
-	private boolean isValidUser(String username, String password) {
-		User user = dao.getUserDao().findUser(username);
-		if (user != null && password != null && password.equals(user.password)) {
-			return true;
-		}
-		return false;
-	}
+      return Response.status(res.getResponseStatus()).entity(res.getBody()).build();
+    }
+  }
 
-	@GET
-	@Path("/invalidate_token")
-	public Response invalidate(@Context HttpServletRequest request) {
-		String authHeader = request.getHeader("Authorization");
-		String tokens[] = authHeader.split(" ");
-		String token = tokens[1];
-		
-		if (token == null || token.length() == 0) {
-			return Response.serverError().build();
-		}
-		
-		dao.getUserDao().invalidateToken(token);
-		return Response.ok().build();
-	}
+  private boolean isValidUser(String username, String password) {
+    User user = dao.getUserDao().findUser(username);
+    if (user != null && password != null && password.equals(user.password)) {
+      return true;
+    }
+    return false;
+  }
+
+  @GET
+  @Path("/invalidate_token")
+  public Response invalidate(@Context HttpServletRequest request) {
+    String authHeader = request.getHeader("Authorization");
+    String tokens[] = authHeader.split(" ");
+    String token = tokens[1];
+
+    if (token == null || token.length() == 0) {
+      return Response.serverError().build();
+    }
+
+    dao.getUserDao().invalidateToken(token);
+    return Response.ok().build();
+  }
 
 }

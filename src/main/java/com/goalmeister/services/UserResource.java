@@ -19,27 +19,27 @@ import com.goalmeister.model.User;
 @Path("admin")
 public class UserResource extends AbstractResource {
 
-	@Context
-	private SecurityContext securityContext;
+  @Context
+  private SecurityContext securityContext;
 
-	@POST
-	@Consumes("application/json")
-	@Produces("application/json")
-	@Path("/users")
-	public Response createUser(User user) {
-		if (securityContext.isUserInRole("admin")) {
-			return Response.ok().entity(dao.getUserDao().newUser(user)).build();
-		}
-		return Response.status(Status.UNAUTHORIZED).build();
-	}
+  @POST
+  @Consumes("application/json")
+  @Produces("application/json")
+  @Path("/users")
+  public Response createUser(User user) {
+    if (securityContext.isUserInRole("admin")) {
+      return Response.ok().entity(dao.getUserDao().newUser(user)).build();
+    }
+    return Response.status(Status.UNAUTHORIZED).build();
+  }
 
-	@DELETE
-	@Path("/users/{id}")
-	public Response deleteUser(@PathParam("id") String id) {
-		if (securityContext.isUserInRole("admin")) {
-			dao.getUserDao().deleteUserById(id);
-			return Response.ok().build();
-		}
-		return Response.status(Status.UNAUTHORIZED).build();
-	}
+  @DELETE
+  @Path("/users/{id}")
+  public Response deleteUser(@PathParam("id") String id) {
+    if (securityContext.isUserInRole("admin")) {
+      dao.getUserDao().deleteUserById(id);
+      return Response.ok().build();
+    }
+    return Response.status(Status.UNAUTHORIZED).build();
+  }
 }

@@ -4,12 +4,12 @@ import com.goalmeister.model.Application;
 
 public interface ApplicationDao {
 
-	Application findByClientId(String clientId);
+  Application findByClientId(String clientId);
 
-	void deleteByClientId(String clientId);
+  void deleteByClientId(String clientId);
 
-	Application create();
+  Application create();
 
-	Application update(Application application);
+  Application update(Application application);
 
 }

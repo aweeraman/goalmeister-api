@@ -21,85 +21,80 @@ import com.goalmeister.model.User;
 import com.goalmeister.model.UserToken;
 
 @Provider
-public class OAuth2Filter implements ContainerRequestFilter,
-		ContainerResponseFilter {
+public class OAuth2Filter implements ContainerRequestFilter, ContainerResponseFilter {
 
-	private final String TOKEN_ENDPOINT = "/oauth2/token";
+  private final String TOKEN_ENDPOINT = "/oauth2/token";
 
-	private UserDao userDao = DaoFactory.getInstance().getUserDao();
-	private ApplicationDao applicationDao = DaoFactory.getInstance()
-			.getApplicationDao();
+  private UserDao userDao = DaoFactory.getInstance().getUserDao();
+  private ApplicationDao applicationDao = DaoFactory.getInstance().getApplicationDao();
 
-	@Override
-	public void filter(ContainerRequestContext request,
-			ContainerResponseContext response) throws IOException {
-	}
+  @Override
+  public void filter(ContainerRequestContext request, ContainerResponseContext response)
+      throws IOException {}
 
-	@Override
-	public void filter(ContainerRequestContext request) throws IOException {
+  @Override
+  public void filter(ContainerRequestContext request) throws IOException {
 
-		// All endpoints other than the token endpoint should be routed through
-		// the bearer token authorization process
-		if (!request.getUriInfo().getPath().equals(TOKEN_ENDPOINT)) {
-			String authHeader = request
-					.getHeaderString(ContainerRequest.AUTHORIZATION);
+    // All endpoints other than the token endpoint should be routed through
+    // the bearer token authorization process
+    if (!request.getUriInfo().getPath().equals(TOKEN_ENDPOINT)) {
+      String authHeader = request.getHeaderString(ContainerRequest.AUTHORIZATION);
 
-			if (authHeader == null || (!authHeader.startsWith("Bearer "))) {
+      if (authHeader == null || (!authHeader.startsWith("Bearer "))) {
 
-				// Return 403 if no bearer token is present
-				forbidden(request);
+        // Return 403 if no bearer token is present
+        forbidden(request);
 
-			} else {
-				String[] tokens = authHeader.split(" ");
-				UserToken token = userDao.findUserToken(tokens[1]);
-				if (token != null) {
-					// Tokens do not expire. If at a later point it needs to be
-					// expired
-					// the check would need to be done here.
-					User user = userDao.findUser(token.email);
+      } else {
+        String[] tokens = authHeader.split(" ");
+        UserToken token = userDao.findUserToken(tokens[1]);
+        if (token != null) {
+          // Tokens do not expire. If at a later point it needs to be
+          // expired
+          // the check would need to be done here.
+          User user = userDao.findUser(token.email);
 
-					// Set the security context so that further authorization
-					// can be performed in the RESTful services
-					request.setSecurityContext(new Credentials(user));
-				} else {
+          // Set the security context so that further authorization
+          // can be performed in the RESTful services
+          request.setSecurityContext(new Credentials(user));
+        } else {
 
-					// Invalid token. Possible break-in attempt.
-					// TODO log this
-					forbidden(request);
-				}
-			}
-		} else {
-			// Handle basic authentication for the token endpoint
-			String authHeader = request
-					.getHeaderString(ContainerRequest.AUTHORIZATION);
+          // Invalid token. Possible break-in attempt.
+          // TODO log this
+          forbidden(request);
+        }
+      }
+    } else {
+      // Handle basic authentication for the token endpoint
+      String authHeader = request.getHeaderString(ContainerRequest.AUTHORIZATION);
 
-			if (authHeader == null || (!authHeader.startsWith("Basic "))) {
+      if (authHeader == null || (!authHeader.startsWith("Basic "))) {
 
-				// The token endpoint requires BASIC authentication
-				request.abortWith(Response.status(Status.FORBIDDEN).build());
+        // The token endpoint requires BASIC authentication
+        request.abortWith(Response.status(Status.FORBIDDEN).build());
 
-			} else {
-				String[] tokens = authHeader.split(" ");
-				tokens = Base64.decodeAsString(tokens[1]).split(":");
+      } else {
+        String[] tokens = authHeader.split(" ");
+        tokens = Base64.decodeAsString(tokens[1]).split(":");
 
-				Application app = applicationDao.findByClientId(tokens[0]);
+        Application app = applicationDao.findByClientId(tokens[0]);
 
-				if (app == null) {
-					forbidden(request);
-				}
+        if (app == null) {
+          forbidden(request);
+        }
 
-				if (!(app.secret.equals(tokens[1]))) {
-					forbidden(request);
-				}
+        if (!(app.secret.equals(tokens[1]))) {
+          forbidden(request);
+        }
 
-				if (!app.enabled.booleanValue()) {
-					forbidden(request);
-				}
-			}
-		}
-	}
+        if (!app.enabled.booleanValue()) {
+          forbidden(request);
+        }
+      }
+    }
+  }
 
-	public void forbidden(ContainerRequestContext request) {
-		request.abortWith(Response.status(Status.FORBIDDEN).build());
-	}
+  public void forbidden(ContainerRequestContext request) {
+    request.abortWith(Response.status(Status.FORBIDDEN).build());
+  }
 }

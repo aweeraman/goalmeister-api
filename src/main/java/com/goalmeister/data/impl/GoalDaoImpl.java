@@ -12,33 +12,33 @@ import com.mongodb.BasicDBObject;
 
 public class GoalDaoImpl extends AbstractDao implements GoalDao {
 
-	private JacksonDBCollection<Goal, String> col_goals = JacksonDBCollection
-			.wrap(db.getCollection("goals"), Goal.class, String.class);
+  private JacksonDBCollection<Goal, String> col_goals = JacksonDBCollection.wrap(
+      db.getCollection("goals"), Goal.class, String.class);
 
-	@Override
-	public List<Goal> list(String tenant) {
-		BasicDBObject obj = new BasicDBObject("tenant", tenant);
-		DBCursor<Goal> cursor = col_goals.find(obj);
-		List<Goal> goals = new LinkedList<Goal>();
-		Goal goal;
-		while (cursor.hasNext()) {
-			goal = cursor.next();
-			goals.add(goal);
-		}
-		return goals;
-	}
+  @Override
+  public List<Goal> list(String tenant) {
+    BasicDBObject obj = new BasicDBObject("tenant", tenant);
+    DBCursor<Goal> cursor = col_goals.find(obj);
+    List<Goal> goals = new LinkedList<Goal>();
+    Goal goal;
+    while (cursor.hasNext()) {
+      goal = cursor.next();
+      goals.add(goal);
+    }
+    return goals;
+  }
 
-	public Goal save(Goal goal) {
-		return col_goals.save(goal).getSavedObject();
-	}
+  public Goal save(Goal goal) {
+    return col_goals.save(goal).getSavedObject();
+  }
 
-	@Override
-	public void delete(String id) {
-		col_goals.removeById(id);
-	}
+  @Override
+  public void delete(String id) {
+    col_goals.removeById(id);
+  }
 
-	@Override
-	public Goal findById(String id) {
-		return col_goals.findOneById(id);
-	}
+  @Override
+  public Goal findById(String id) {
+    return col_goals.findOneById(id);
+  }
 }
