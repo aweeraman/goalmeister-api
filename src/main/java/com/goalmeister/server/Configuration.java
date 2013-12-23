@@ -23,7 +23,9 @@ public class Configuration {
   private static final String MONGO_USERNAME_KEY = "mongo_username";
   private static final String MONGO_PASSWORD_KEY = "mongo_password";
 
-  private Configuration() {}
+  private Configuration() {
+    // singleton
+  }
 
   public static synchronized Configuration loadConfiguration(String yamlFile) throws IOException {
     InputStream is = new FileInputStream(new File(yamlFile));

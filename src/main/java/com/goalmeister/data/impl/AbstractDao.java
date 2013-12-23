@@ -12,7 +12,7 @@ public abstract class AbstractDao {
   protected static MongoClient client;
   protected static DB db;
 
-  public AbstractDao() {
+  protected AbstractDao() {
     if (client == null) {
       client = getClient();
     }

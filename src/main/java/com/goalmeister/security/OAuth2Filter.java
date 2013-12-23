@@ -23,14 +23,16 @@ import com.goalmeister.model.UserToken;
 @Provider
 public class OAuth2Filter implements ContainerRequestFilter, ContainerResponseFilter {
 
-  private final String TOKEN_ENDPOINT = "/oauth2/token";
+  private static final String TOKEN_ENDPOINT = "/oauth2/token";
 
   private UserDao userDao = DaoFactory.getInstance().getUserDao();
   private ApplicationDao applicationDao = DaoFactory.getInstance().getApplicationDao();
 
   @Override
   public void filter(ContainerRequestContext request, ContainerResponseContext response)
-      throws IOException {}
+      throws IOException {
+    // Empty right now
+  }
 
   @Override
   public void filter(ContainerRequestContext request) throws IOException {
@@ -50,8 +52,7 @@ public class OAuth2Filter implements ContainerRequestFilter, ContainerResponseFi
         UserToken token = userDao.findUserToken(tokens[1]);
         if (token != null) {
           // Tokens do not expire. If at a later point it needs to be
-          // expired
-          // the check would need to be done here.
+          // expired the check would need to be done here.
           User user = userDao.findUser(token.email);
 
           // Set the security context so that further authorization
@@ -79,15 +80,7 @@ public class OAuth2Filter implements ContainerRequestFilter, ContainerResponseFi
 
         Application app = applicationDao.findByClientId(tokens[0]);
 
-        if (app == null) {
-          forbidden(request);
-        }
-
-        if (!(app.secret.equals(tokens[1]))) {
-          forbidden(request);
-        }
-
-        if (!app.enabled.booleanValue()) {
+        if (app == null || (!(app.secret.equals(tokens[1]))) || (!app.enabled.booleanValue())) {
           forbidden(request);
         }
       }

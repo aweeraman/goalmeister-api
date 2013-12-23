@@ -15,11 +15,11 @@ NOTES
   * Actions
   * User management - done 12/21
   * Data sync
-* Metrics
+* Metrics and analytics
 * Reverse Proxy (nginx)
-* Logger integration
+* Logger integration (log security violations)
 * Sonar integration - done 12/22
-
+* Adopt google code guidelines - done 12/23
 
 ---
 
