@@ -27,6 +27,7 @@ NOTES
 ```
 ROOT - http://localhost:8080
 Heartbeat - http://localhost:8080/api/ping
+AWS - 54.201.14.80
 ```
 
 
