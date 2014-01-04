@@ -1,4 +1,5 @@
 base_uri: http://localhost:8080/api
+debug: false
 html_dir: src/main/html/app
 file_cache_enabled: no
 mongo_hostname: localhost
