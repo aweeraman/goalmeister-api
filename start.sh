@@ -15,4 +15,5 @@ if [[ "$dbg_value" =~ "true" ]]; then
 else
   CMD_LINE="java -jar target/goalmeister-api-*.jar $config_file"
 fi
-bash -c "$CMD_LINE"
+nohup bash -c "$CMD_LINE" 2>&1 > server.out &
+echo $! > server.pid
