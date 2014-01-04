@@ -79,6 +79,56 @@ sudo keytool -import -keystore /Library/Java/Home/lib/security/cacerts -file dev
 
 ---
 
+### nginx configuration
+```
+server {
+	# Goalmeister config
+	listen 80;
+	listen [::]:80;
+	server_name goalmeister.com;
+	return 301 https://$server_name$request_uri;
+}
+
+server {
+	# Goalmeister config
+	listen 443 default_server;
+	listen [::]:443 ipv6only=on;
+	server_name goalmeister.com;
+
+	# Goalmeister SSL config
+	ssl on;
+	ssl_certificate /etc/ssl/certs/goalmeister_bundle.pem;
+	ssl_certificate_key /etc/ssl/private/goalmeister.key;
+	ssl_protocols SSLv3 TLSv1;
+	ssl_ciphers ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM;
+	ssl_session_cache shared:SSL:10m;
+
+	location / {
+		root /home/ubuntu/goalmeister-api/src/main/html/app;
+		index index.html index.htm;
+
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files $uri $uri/ /index.html;
+	}
+
+	location /api {
+		# Goalmeister reverse proxy configuration
+		proxy_pass		http://localhost:8080;
+		proxy_set_header	Host $host;
+		proxy_set_header	X-Real-IP $remote_addr;
+		proxy_set_header	X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_connect_timeout	150;
+		proxy_send_timeout	100;
+		proxy_read_timeout	100;
+		proxy_buffers		4 32k;
+		client_max_body_size	8m;
+		client_body_buffer_size	128k;
+	}
+```
+
+---
+
 # Problems and resolutions
 
 ### META-INF/services/* files were not being concatenated correctly
