@@ -7,7 +7,7 @@ NOTES
   * Basic auth using client credentials for token endpoint - done 12/22
   * Role based authorization - done 12/21
   * Multi-tenancy for the users - done 12/21
-  * SSL - terminate at nginx reverse proxy instead of Grizzly
+  * SSL - terminate at nginx reverse proxy instead of Grizzly - done 1/4
 * MongoDB integration - done 12/16
 * Serialization and object binding - done 12/16
 * Services
@@ -16,7 +16,7 @@ NOTES
   * User management - done 12/21
   * Data sync
 * Metrics and analytics
-* Reverse Proxy (nginx)
+* Reverse Proxy (nginx) - done 1/4
 * Logger integration (log security violations)
 * Sonar integration - done 12/22
 * Adopt google code guidelines - done 12/23
@@ -58,6 +58,10 @@ http://localhost:9000
 keytool -genkey -keyalg RSA -alias devcert -keystore keystore.jks -storepass d3vp4ss -keysize 2048
 keytool -exportcert -keystore keystore.jks -file devcert.cer -alias devcert
 keytool -importcert -keystore truststore.jks -alias devcert -file devcert.cer 
+
+# Nginx / SSL
+openssl req -nodes -newkey rsa:2048 -keyout goalmeister_server.key -out goalmeister_server.csr
+openssl x509 -in ssl/goalmeister.cer -text
 
 # To import the self-signed certificate to the system keystore (not a good idea)
 sudo keytool -import -keystore /Library/Java/Home/lib/security/cacerts -file devcert.cer -alias devcert
