@@ -7,12 +7,16 @@ import java.util.Map;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.jersey.grizzly2.servlet.GrizzlyWebContainerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Main class.
  * 
  */
 public class Start {
+  
+  private static final Logger logger = LoggerFactory.getLogger(Start.class);
 
   /**
    * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -42,7 +46,7 @@ public class Start {
     StaticHttpHandler httpHandler = new StaticHttpHandler(config.getHtmlDirectory());
     httpHandler.setFileCacheEnabled(config.isFileCacheEnabled());
     httpServer.getServerConfiguration().addHttpHandler(httpHandler, "/");
-
+    
     return httpServer;
   }
 
@@ -51,8 +55,9 @@ public class Start {
    * 
    * @param args
    * @throws IOException
+   * @throws InterruptedException 
    */
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, InterruptedException {
 
     Configuration config = Configuration.getInstance();
     if (args.length > 0) {
@@ -61,10 +66,8 @@ public class Start {
 
     final HttpServer server = startServer(config);
 
-    System.out.println(String.format(
-        "Goalmeister API server started (%s/application.wadl)\nHit enter to stop it...",
-        config.getBaseUri()));
-    System.in.read();
-    server.shutdownNow();
+    logger.info("Starting API server: " + config.getBaseUri());
+    System.out.println("Press CTRL^C to exit...");
+    Thread.currentThread().join();
   }
 }
